@@ -20,6 +20,24 @@ public class ApnXmlLoader implements IApnLoader {
 			return null;
 		}
 		ArrayList<ApnInfo> apnInfoList = new ArrayList<ApnInfo>();
+
+		List<Element> apnElements = getApnElements(apnFilePath);
+		System.out.println("size: " + apnElements.size());
+		for (Element element : apnElements) {
+			ApnInfo apnInfo = getRow(element);
+			if (apnInfo == null) {
+                   System.out.println("apnInfo is null");
+                   continue;
+            }
+			apnInfoList.add(apnInfo);
+		}			
+	    return apnInfoList;
+	}
+	
+	public List<Element> getApnElements(String apnFilePath) {
+		if (!MyUtil.isLegalXMLFile(apnFilePath)) {			
+			return null;
+		}		
 		SAXReader saxReader = new SAXReader();
 		try {
 			Document document = saxReader.read(new File(apnFilePath));
@@ -29,22 +47,12 @@ public class ApnXmlLoader implements IApnLoader {
 				return null;
 			}
 			List<Element> apnElements = root.elements();
-			System.out.println("size: " + apnElements.size());
-			for (Element element : apnElements) {
-				ApnInfo apnInfo = getRow(element);
-				if (apnInfo == null) {
-                    System.out.println("apnInfo is null");
-                    continue;
-                }
-				apnInfoList.add(apnInfo);
-			}
-			
-	        System.out.println("Root: " + root.getName());
-	        return apnInfoList;
+			System.out.println("size: " + apnElements.size());			
+	        return apnElements;
 		} catch (DocumentException e) {
 			System.out.println("xml file parse failed!!!");
 			return null;
-		}
+		}		
 	}
 	
 	

@@ -34,9 +34,6 @@ public class ApnLoadManager implements IApnLoader {
 		}
 		apnLoader.loadApns(apnFilePath);
 		return apnInfoList;		
-	}
-
-	
-	
+	}	
 	
 }
