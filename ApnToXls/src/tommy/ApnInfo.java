@@ -5,7 +5,10 @@ import java.util.HashMap;
 import util.MyUtil;
 
 public class ApnInfo {
-	public static String[] APN_KEY_ARRAY = {"carrier", "mcc", "mnc", "apn"};
+	public static String[] APN_KEY_ARRAY = {"carrier", "mcc", "mnc", 
+		"apn", "proxy", "port", "mmsproxy", "mmsport", "mmsc", "server", 
+		"user", "password", "authtype", "type", "read_only", "ppp_number", 
+		"protocol", "roaming_protocol", "spn", "mvno_type", "mvno_match_data"};
 	private HashMap<String, String> infoMap = new HashMap<String, String>();
 	
 	public void put(String key, String value){
