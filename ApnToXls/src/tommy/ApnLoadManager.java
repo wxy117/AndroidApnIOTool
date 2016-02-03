@@ -10,26 +10,30 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
+import util.Log;
 import util.MyUtil;
 
 public class ApnLoadManager implements IApnLoader {
-	private ArrayList<ApnInfo> apnInfoList = new ArrayList<ApnInfo>();
+	private static final String TAG = "ApnLoadManager";
 	IApnLoader apnLoader = null;
 	
 	public static void main(String[] args) {
 		ApnLoadManager apnLoadManager = new ApnLoadManager();
-		
 		apnLoadManager.loadApns("/Users/mac/Desktop/apns-conf.xml");
 	}
 	
+	/* (non-Javadoc)
+	 * @see tommy.IApnLoader#loadApns(java.lang.String)
+	 */
 	@Override
 	public ArrayList<ApnInfo> loadApns(String apnFilePath) {
+		ArrayList<ApnInfo> apnInfoList = new ArrayList<ApnInfo>();
 		if (MyUtil.isLegalXMLFile(apnFilePath)) {
 			apnLoader = new ApnXmlLoader();
 		} else if (MyUtil.isLegalXLSFile(apnFilePath)) {
 			apnLoader = new ApnXlsLoader();
 		} else {
-			System.out.println("neither xml nor xls file!!!");
+			Log.d(TAG, "neither xml nor xls file!!!");
 			return null;
 		}
 		apnLoader.loadApns(apnFilePath);

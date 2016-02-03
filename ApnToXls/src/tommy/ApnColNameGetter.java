@@ -30,6 +30,12 @@ public class ApnColNameGetter {
 		return getApnColNameList(path, "apn", true);
 	}
 	
+	/**
+	 * @param path
+	 * @param elementName
+	 * @param isIgnoreCase
+	 * @return
+	 */
 	public ArrayList<String> getApnColNameList(String path, String elementName, boolean isIgnoreCase) {
 		
 		if (!MyUtil.isLegalXMLFile(path)) {
@@ -46,6 +52,12 @@ public class ApnColNameGetter {
 		return apnColNameList;
 	}
 	
+	/**
+	 * @param elements
+	 * @param elementName
+	 * @param isIgnoreCase
+	 * @return
+	 */
 	private ArrayList<String> getColNameList(List<Element> elements, String elementName, boolean isIgnoreCase) {
 		if (elements == null || elements.size() == 0) {
 			return null;
@@ -69,6 +81,9 @@ public class ApnColNameGetter {
 		return nameList;		
 	}
 	
+	/**
+	 * 
+	 */
 	private void printApnAttrName() {
 		ApnColNameGetter apnColNameGetter = new ApnColNameGetter();
 		ArrayList<String> mList = 

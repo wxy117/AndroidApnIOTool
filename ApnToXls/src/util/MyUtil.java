@@ -1,6 +1,7 @@
 package util;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import jxl.format.Colour;
 
@@ -216,6 +217,8 @@ public class MyUtil {
 		return null;
 	}
 	
+	
+	
 	public static boolean isLegalXMLFile(String xmlFilepath) {
 		if (!MyUtil.isFile(xmlFilepath)) {		
 			System.out.println("illegal File path : " + xmlFilepath);
@@ -242,6 +245,22 @@ public class MyUtil {
 			return false;
 		} 			
 		return true;
+	}
+	
+	
+	
+	public static boolean isEmptyArrayList(ArrayList<?> list) {
+		if (list == null || list.isEmpty()) {
+			return false;
+		}
+		return true;	
+	}
+	
+	public static boolean isLegalDirPath(String dirPath) {
+		if (isExists(dirPath) && isDirectory(dirPath)) {
+			return true;
+		} 
+		return false;
 	}
 	
 }
