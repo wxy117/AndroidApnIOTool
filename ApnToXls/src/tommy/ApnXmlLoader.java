@@ -34,6 +34,7 @@ public class ApnXmlLoader implements IApnLoader {
                 Log.d(TAG, "apnInfo is null");
                 continue;
             }
+//			Log.d(TAG, "apnInfoList size" + apnInfoList.size());
 			apnInfoList.add(apnInfo);
 		}			
 	    return apnInfoList;

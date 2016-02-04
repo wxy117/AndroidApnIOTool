@@ -3,6 +3,7 @@ package util;
 import java.io.File;
 import java.util.ArrayList;
 
+import tommy.ApnExportManager;
 import jxl.format.Colour;
 
 public class MyUtil {
@@ -69,7 +70,7 @@ public class MyUtil {
 		if (path == null) {
 			return false;
 		}
-		File f=new File(path);		
+		File f = new File(path);		
 		if (f.isDirectory()) {
 			return true;
 		}else{
@@ -81,7 +82,7 @@ public class MyUtil {
 		if (path == null) {
 			return false;
 		}
-		File f=new File(path);		
+		File f = new File(path);		
 		if (f.isAbsolute()) {
 			return true;
 		}else{
@@ -220,40 +221,28 @@ public class MyUtil {
 	
 	
 	public static boolean isLegalXMLFile(String xmlFilepath) {
-		if (!MyUtil.isFile(xmlFilepath)) {		
-			System.out.println("illegal File path : " + xmlFilepath);
-			return false;
-		} else if (!MyUtil.isExists(xmlFilepath)) {
-			System.out.println("file does not exists!! File path : " + xmlFilepath);
-			return false;
-		} else if (!xmlFilepath.endsWith(".xml")) {
-			System.out.println("file does not end with .xml!! File path : " + xmlFilepath);
-			return false;
-		} 			
-		return true;
+		int fileType = ApnExportManager.getApnFileType(xmlFilepath);
+		if (fileType == ApnExportManager.FILE_TYPE_XML) {
+			return true;
+		}		
+		return false;
 	}
 	
 	public static boolean isLegalXLSFile(String xlsFilepath) {
-		if (!MyUtil.isFile(xlsFilepath)) {		
-			System.out.println("illegal File path : " + xlsFilepath);
-			return false;
-		} else if (!MyUtil.isExists(xlsFilepath)) {
-			System.out.println("file does not exists!! File path : " + xlsFilepath);
-			return false;
-		} else if (!xlsFilepath.endsWith(".xls")) {
-			System.out.println("file does not end with .xml!! File path : " + xlsFilepath);
-			return false;
-		} 			
-		return true;
+		int fileType = ApnExportManager.getApnFileType(xlsFilepath);
+		if (fileType == ApnExportManager.FILE_TYPE_XLS) {
+			return true;
+		}		
+		return false;
 	}
 	
 	
 	
 	public static boolean isEmptyArrayList(ArrayList<?> list) {
 		if (list == null || list.isEmpty()) {
-			return false;
+			return true;
 		}
-		return true;	
+		return false;	
 	}
 	
 	public static boolean isLegalDirPath(String dirPath) {

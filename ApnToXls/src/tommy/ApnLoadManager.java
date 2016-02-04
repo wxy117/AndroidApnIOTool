@@ -36,7 +36,8 @@ public class ApnLoadManager implements IApnLoader {
 			Log.d(TAG, "neither xml nor xls file!!!");
 			return null;
 		}
-		apnLoader.loadApns(apnFilePath);
+		apnInfoList = apnLoader.loadApns(apnFilePath);
+		Log.d(TAG, "apnInfoList size" + apnInfoList.size());
 		return apnInfoList;		
 	}	
 	

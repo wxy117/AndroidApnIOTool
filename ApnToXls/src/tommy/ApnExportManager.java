@@ -43,9 +43,10 @@ public class ApnExportManager implements IApnExporter {
 	
 	@Override
 	public boolean addApnNodesToExistFlie(ArrayList<ApnInfo> apnInfoList, String apnFilePath) {
+		Log.d(TAG, "addApnNodesToExistXml():apnInfoList size : " + apnInfoList.size());
 		if (isEmptyArrayList(apnInfoList) || !isLegalApnFile(apnFilePath)) {
 			Log.d(TAG, "addApnNodesToExistXml():apnInfoList is null : " + (apnInfoList == null));
-			Log.d(TAG, "addApnNodesToExistXml():apnFilePath" + apnFilePath);
+			Log.d(TAG, "addApnNodesToExistXml():apnFilePath " + apnFilePath);
 			return false;
 		}
 		int apnFileType = getApnFileType(apnFilePath);
@@ -55,7 +56,7 @@ public class ApnExportManager implements IApnExporter {
 			apnExporter = new ApnXmlExporter();
 			break;
 		case FILE_TYPE_XLS:
-			apnExporter = new ApnXmlExporter();
+			apnExporter = new ApnXlsExporter();
 			break;
 		default:				
 			break;
@@ -74,8 +75,11 @@ public class ApnExportManager implements IApnExporter {
 			System.out.println("file does not exists!! File path : " + apnFilePath);
 			return -1;
 		}
+		
 		String fileType = apnFilePath.substring(apnFilePath.lastIndexOf(".") + 1, apnFilePath.length());
+		Log.d(TAG, "fileType:" + fileType);
 		if (fileType.equalsIgnoreCase("xml")) {
+			Log.d(TAG, "" + FILE_TYPE_XML);
 			return FILE_TYPE_XML;
 		} else if (fileType.equalsIgnoreCase("xls")) {
 			return FILE_TYPE_XLS;
