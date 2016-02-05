@@ -11,7 +11,7 @@ public class Test {
 		ApnLoadManager apnLoadManager = new ApnLoadManager();
 		ApnExportManager apnExportManager = new ApnExportManager();
 		ArrayList<ApnInfo> apnInfoList = apnLoadManager.loadApns("/Users/mac/Desktop/apns-conf.xml");
-//		apnExportManager.addApnNodesToExistFlie(apnInfoList, "/Users/mac/Desktop/apns-conf.xml");
-		apnExportManager.exportApns(apnInfoList, "/Users/mac/Desktop/", ApnExportManager.FILE_TYPE_XML);
+		apnExportManager.addApnNodesToExistFlie(apnInfoList, "/Users/mac/Desktop/apns-conf.xml");
+//		apnExportManager.exportApns(apnInfoList, "/Users/mac/Desktop/", ApnExportManager.FILE_TYPE_XML);
 	}
 }

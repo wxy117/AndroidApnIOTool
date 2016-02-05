@@ -28,6 +28,9 @@ public class ApnXmlExporter implements IApnExporter {
 			return false;
 		}
 		Document document = DocumentHelper.createDocument();
+		document.addComment(ApnExportManager.COMMENT_HEAD1);
+		document.addComment(ApnExportManager.COMMENT_HEAD2);
+		document.addComment(ApnExportManager.COMMENT_HEAD3);
 		Element rootElement = document.addElement("apns").addAttribute("version", "8");
 		addApnInfoListToElement(apnInfoList, rootElement);
 		for (ApnInfo apnInfo : apnInfoList) {
@@ -79,17 +82,18 @@ public class ApnXmlExporter implements IApnExporter {
 	public void writeApnToXml(Document document, String apnFilePath) throws Exception {  
         // 紧凑的格式  
 //         OutputFormat format = OutputFormat.createCompactFormat();  
-//         OutputFormat format = OutputFormat.createPrettyPrint();  
-         OutputFormat format = new OutputFormat();
+         OutputFormat format = OutputFormat.createPrettyPrint();  
+//         OutputFormat format = new OutputFormat();
         // 排版缩进的格式  
 //        OutputFormat format = OutputFormat.createPrettyPrint();  
         // 设置编码  
 //         format.setNewLineAfterNTags(1);
         format.setEncoding("utf-8");  
+//        format.setNewLineAfterNTags(1);
 //      format.setSuppressDeclaration(true);
 //      format.setIndent(true); //设置是否缩进
 //     // format.setIndent(" "); //以空格方式实现缩进
-//      format.setNewlines(true); //设置是否换行
+      format.setNewlines(true); //设置是否换行
         // 创建XMLWriter对象,指定了写出文件及编码格式  
         // XMLWriter writer = new XMLWriter(new FileWriter(new  
         // File("src//a.xml")),format);  
