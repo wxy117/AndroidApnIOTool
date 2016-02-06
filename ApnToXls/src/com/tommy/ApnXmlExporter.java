@@ -1,4 +1,4 @@
-package tommy;
+package com.tommy;
 
 import static util.MyUtil.*;
 

@@ -1,4 +1,4 @@
-package tommy;
+package com.tommy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +14,16 @@ public class ApnInfo {
 		"protocol", "roaming_protocol", "spn", "mvno_type", "mvno_match_data"};
 	private HashMap<String, String> infoMap = new HashMap<String, String>();
 	private ArrayList<String> commentList = new ArrayList<String>();
+	private String groupName = null;
 	
+	public String getGroupName() {
+		return groupName;
+	}
+
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+
 	public ArrayList<String> getCommentList() {
 		return commentList;
 	}
