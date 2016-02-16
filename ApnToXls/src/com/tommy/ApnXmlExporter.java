@@ -83,6 +83,7 @@ public class ApnXmlExporter implements IApnExporter {
         // 紧凑的格式  
 //         OutputFormat format = OutputFormat.createCompactFormat();  
          OutputFormat format = OutputFormat.createPrettyPrint();  
+         format.setIndentSize(4);
 //         OutputFormat format = new OutputFormat();
         // 排版缩进的格式  
 //        OutputFormat format = OutputFormat.createPrettyPrint();  
