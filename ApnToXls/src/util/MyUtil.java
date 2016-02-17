@@ -3,7 +3,7 @@ package util;
 import java.io.File;
 import java.util.ArrayList;
 
-import com.tommy.ApnExportManager;
+import com.tommy.ApnWriter;
 
 import jxl.format.Colour;
 
@@ -222,16 +222,16 @@ public class MyUtil {
 	
 	
 	public static boolean isLegalXMLFile(String xmlFilepath) {
-		int fileType = ApnExportManager.getApnFileType(xmlFilepath);
-		if (fileType == ApnExportManager.FILE_TYPE_XML) {
+		int fileType = ApnWriter.getApnFileType(xmlFilepath);
+		if (fileType == ApnWriter.FILE_TYPE_XML) {
 			return true;
 		}		
 		return false;
 	}
 	
 	public static boolean isLegalXLSFile(String xlsFilepath) {
-		int fileType = ApnExportManager.getApnFileType(xlsFilepath);
-		if (fileType == ApnExportManager.FILE_TYPE_XLS) {
+		int fileType = ApnWriter.getApnFileType(xlsFilepath);
+		if (fileType == ApnWriter.FILE_TYPE_XLS) {
 			return true;
 		}		
 		return false;

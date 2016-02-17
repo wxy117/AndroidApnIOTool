@@ -17,20 +17,20 @@ import org.dom4j.io.XMLWriter;
 
 import util.Log;
 
-public class ApnXmlExporter implements IApnExporter {
-	private static final String TAG = "ApnXmlExporter";
+public class ApnXmlWriter implements IApnWriter {
+	private static final String TAG = "ApnXmlWriter";
 
 	@Override
-	public boolean exportApns(ArrayList<ApnInfo> apnInfoList,
+	public boolean writeApns(ArrayList<ApnInfo> apnInfoList,
 			String apnDirPath, int fileType) {
 		if (isEmptyArrayList(apnInfoList) || !isDirectory(apnDirPath)) {
 			Log.d(TAG, "apnInfoList is empty or apnDirPath is not dir : " + apnDirPath);
 			return false;
 		}
 		Document document = DocumentHelper.createDocument();
-		document.addComment(ApnExportManager.COMMENT_HEAD1);
-		document.addComment(ApnExportManager.COMMENT_HEAD2);
-		document.addComment(ApnExportManager.COMMENT_HEAD3);
+		document.addComment(ApnWriter.COMMENT_HEAD1);
+		document.addComment(ApnWriter.COMMENT_HEAD2);
+		document.addComment(ApnWriter.COMMENT_HEAD3);
 		Element rootElement = document.addElement("apns").addAttribute("version", "8");
 		addApnInfoListToElement(apnInfoList, rootElement);
 		for (ApnInfo apnInfo : apnInfoList) {
@@ -79,22 +79,16 @@ public class ApnXmlExporter implements IApnExporter {
 		return false;
 	}
 	
-	public void writeApnToXml(Document document, String apnFilePath) throws Exception {  
+	public void writeApnToXml(Document document, String apnFilePath) throws Exception {  			
         // 紧凑的格式  
-//         OutputFormat format = OutputFormat.createCompactFormat();  
-         OutputFormat format = OutputFormat.createPrettyPrint();  
-         format.setIndentSize(4);
-//         OutputFormat format = new OutputFormat();
-        // 排版缩进的格式  
-//        OutputFormat format = OutputFormat.createPrettyPrint();  
-        // 设置编码  
-//         format.setNewLineAfterNTags(1);
+//		OutputFormat format = OutputFormat.createCompactFormat();  
+        OutputFormat format = OutputFormat.createPrettyPrint();  
+        format.setIndent(true); 		//设置是否缩进
+        format.setIndentSize(4);		//将缩进设置为四个空格
         format.setEncoding("utf-8");  
-//        format.setNewLineAfterNTags(1);
-//      format.setSuppressDeclaration(true);
-//      format.setIndent(true); //设置是否缩进
-//     // format.setIndent(" "); //以空格方式实现缩进
-      format.setNewlines(true); //设置是否换行
+        //format.setIndent(" "); 		//以空格方式实现缩进
+         
+        format.setNewlines(true); //设置是否换行
         // 创建XMLWriter对象,指定了写出文件及编码格式  
         // XMLWriter writer = new XMLWriter(new FileWriter(new  
         // File("src//a.xml")),format);  
@@ -108,14 +102,11 @@ public class ApnXmlExporter implements IApnExporter {
         if (apnFileDir == null) {
         	return;
         }
-        XMLWriter writer = new XMLWriter(new OutputStreamWriter(  
-                new FileOutputStream(new File(apnFileDir + "apn-conf-new.xml")), "UTF-8"), format);  
-        // 写入  
-        writer.write(document);  
-        // 立即写入  
-        writer.flush();  
-        // 关闭操作  
-        writer.close();  
+        XMLWriter writer = new XMLWriter(new OutputStreamWriter(
+        		 new FileOutputStream(new File(apnFileDir + "apn-conf-new.xml")), "UTF-8"), format);  
+        writer.write(document);			// 写入
+        writer.flush();  				// 立即写入 
+        writer.close();  				// 关闭操作 
     }
 	
 	private void addApnInfoListToElement(ArrayList<ApnInfo> apnInfoList, Element element) {
@@ -123,6 +114,13 @@ public class ApnXmlExporter implements IApnExporter {
 			Element apnElement = element.addElement("apn");
 			apnInfo.addApnElementAttribute(apnElement);
 		}
+	}
+
+	@Override
+	public boolean writeApnsForGroup(ArrayList<ApnGroup> apnGroupList,
+			String apnDirPath, int fileType) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 

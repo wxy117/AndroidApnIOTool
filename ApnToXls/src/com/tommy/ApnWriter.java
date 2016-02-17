@@ -6,8 +6,8 @@ import util.Log;
 import util.MyUtil;
 import static util.MyUtil.*;
 
-public class ApnExportManager implements IApnExporter {
-	private static final String TAG = "ApnExportManager";
+public class ApnWriter implements IApnWriter {
+	private static final String TAG = "ApnWriter";
 	public static final String COMMENT_HEAD1 = "\n/*\n** Copyright 2006, Google Inc.\n"
 			+ "**\n** Licensed under the Apache License, Version 2.0 (the \"License\");\n"
 			+ "** you may not use this file except in compliance with the License.\n"
@@ -34,27 +34,32 @@ public class ApnExportManager implements IApnExporter {
 	}
 	
 	@Override
-	public boolean exportApns(ArrayList<ApnInfo> apnInfoList, String apnDirPath, int fileType) {
+	public boolean writeApns(ArrayList<ApnInfo> apnInfoList, String apnDirPath, int fileType) {
 		if (isEmptyArrayList(apnInfoList) || !isLegalDirPath(apnDirPath)) {
 			Log.d(TAG, "exportApns():apnInfoList is null : " + (apnInfoList == null));
 			Log.d(TAG, "exportApns():apnDirPath" + apnDirPath);
 			return false;
 		}
-		IApnExporter apnExporter = null;
-		switch(fileType) {
-		case FILE_TYPE_XML:
-			apnExporter = new ApnXmlExporter();
-			break;
-		case FILE_TYPE_XLS:
-			apnExporter = new ApnXlsExporter();
-			break;
-		default:
-			break;
-		}
-		if (apnExporter != null) {
-			return apnExporter.exportApns(apnInfoList, apnDirPath, fileType);
+		IApnWriter apnWriter = getApnWriter(fileType);
+		if (apnWriter != null) {
+			return apnWriter.writeApns(apnInfoList, apnDirPath, fileType);
 		}
 		return false;		
+	}
+	
+	@Override
+	public boolean writeApnsForGroup(ArrayList<ApnGroup> apnGroupList,
+			String apnDirPath, int fileType) {
+		if (isEmptyArrayList(apnGroupList) || !isLegalDirPath(apnDirPath)) {
+			Log.d(TAG, "exportApns():apnGroupList is null : " + (apnGroupList == null));
+			Log.d(TAG, "exportApns():apnDirPath" + apnDirPath);
+			return false;
+		}
+		IApnWriter apnWriter = getApnWriter(fileType);
+		if (apnWriter != null) {
+			return apnWriter.writeApnsForGroup(apnGroupList, apnDirPath, fileType);
+		}
+		return false;	
 	}
 	
 	@Override
@@ -65,20 +70,10 @@ public class ApnExportManager implements IApnExporter {
 			Log.d(TAG, "addApnNodesToExistXml():apnFilePath " + apnFilePath);
 			return false;
 		}
-		int apnFileType = getApnFileType(apnFilePath);
-		IApnExporter apnExporter = null;
-		switch(apnFileType) {
-		case FILE_TYPE_XML:
-			apnExporter = new ApnXmlExporter();
-			break;
-		case FILE_TYPE_XLS:
-			apnExporter = new ApnXlsExporter();
-			break;
-		default:				
-			break;
-		}
-		if (apnExporter != null) {
-			return apnExporter.addApnNodesToExistFlie(apnInfoList, apnFilePath);
+		int fileType = getApnFileType(apnFilePath);
+		IApnWriter apnWriter = getApnWriter(fileType);
+		if (apnWriter != null) {
+			return apnWriter.addApnNodesToExistFlie(apnInfoList, apnFilePath);
 		}		
 		return false;
 	}
@@ -111,6 +106,23 @@ public class ApnExportManager implements IApnExporter {
 		}
 		return false;
 	}
+	
+	private IApnWriter getApnWriter(int fileType) {
+		IApnWriter apnWriter = null;
+		switch(fileType) {
+		case FILE_TYPE_XML:
+			apnWriter = new ApnXmlWriter();
+			break;
+		case FILE_TYPE_XLS:
+			apnWriter = new ApnXlsWriter();
+			break;
+		default:
+			break;
+		}
+		return apnWriter;
+	}
+
+
 	
 	
 	

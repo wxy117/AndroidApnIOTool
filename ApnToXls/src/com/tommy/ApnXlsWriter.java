@@ -2,10 +2,10 @@ package com.tommy;
 
 import java.util.ArrayList;
 
-public class ApnXlsExporter implements IApnExporter {
+public class ApnXlsWriter implements IApnWriter {
 
 	@Override
-	public boolean exportApns(ArrayList<ApnInfo> apnInfoList,
+	public boolean writeApns(ArrayList<ApnInfo> apnInfoList,
 			String apnDirPath, int fileType) {
 		// TODO Auto-generated method stub
 		return false;
@@ -14,6 +14,13 @@ public class ApnXlsExporter implements IApnExporter {
 	@Override
 	public boolean addApnNodesToExistFlie(ArrayList<ApnInfo> apnInfoList,
 			String apnFilePath) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean writeApnsForGroup(ArrayList<ApnGroup> apnGroupList,
+			String apnDirPath, int fileType) {
 		// TODO Auto-generated method stub
 		return false;
 	}

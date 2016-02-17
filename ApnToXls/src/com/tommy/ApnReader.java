@@ -13,30 +13,30 @@ import org.dom4j.io.SAXReader;
 import util.Log;
 import util.MyUtil;
 
-public class ApnLoadManager implements IApnLoader {
-	private static final String TAG = "ApnLoadManager";
-	IApnLoader apnLoader = null;
+public class ApnReader implements IApnReader {
+	private static final String TAG = "ApnReader";
+	IApnReader apnReader = null;
 	
 	public static void main(String[] args) {
-		ApnLoadManager apnLoadManager = new ApnLoadManager();
-		apnLoadManager.loadApns("/Users/mac/Desktop/apns-conf.xml");
+		ApnReader apnReader = new ApnReader();
+		apnReader.readApns("/Users/mac/Desktop/apns-conf.xml");
 	}
 	
 	/* (non-Javadoc)
 	 * @see tommy.IApnLoader#loadApns(java.lang.String)
 	 */
 	@Override
-	public ArrayList<ApnInfo> loadApns(String apnFilePath) {
+	public ArrayList<ApnInfo> readApns(String apnFilePath) {
 		ArrayList<ApnInfo> apnInfoList = new ArrayList<ApnInfo>();
 		if (MyUtil.isLegalXMLFile(apnFilePath)) {
-			apnLoader = new ApnXmlLoader();
+			apnReader = new ApnXmlReader();
 		} else if (MyUtil.isLegalXLSFile(apnFilePath)) {
-			apnLoader = new ApnXlsLoader();
+			apnReader = new ApnXlsReader();
 		} else {
 			Log.d(TAG, "neither xml nor xls file!!!");
 			return null;
 		}
-		apnInfoList = apnLoader.loadApns(apnFilePath);
+		apnInfoList = apnReader.readApns(apnFilePath);
 		Log.d(TAG, "apnInfoList size" + apnInfoList.size());
 		return apnInfoList;		
 	}	

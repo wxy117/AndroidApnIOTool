@@ -2,10 +2,10 @@ package com.tommy;
 
 import java.util.ArrayList;
 
-public class ApnXlsLoader implements IApnLoader {
+public class ApnXlsReader implements IApnReader {
 
 	@Override
-	public ArrayList<ApnInfo> loadApns(String apnFilePath) {
+	public ArrayList<ApnInfo> readApns(String apnFilePath) {
 		// TODO Auto-generated method stub
 		return null;
 	}

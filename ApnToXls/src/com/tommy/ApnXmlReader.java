@@ -13,14 +13,14 @@ import org.dom4j.tree.DefaultAttribute;
 import util.Log;
 import util.MyUtil;
 
-public class ApnXmlLoader implements IApnLoader {
+public class ApnXmlReader implements IApnReader {
 	private static final String TAG = "ApnXmlLoader";
 
 	/* (non-Javadoc)
 	 * @see tommy.IApnLoader#loadApns(java.lang.String)
 	 */
 	@Override
-	public ArrayList<ApnInfo> loadApns(String apnFilePath) {
+	public ArrayList<ApnInfo> readApns(String apnFilePath) {
 		if (!MyUtil.isLegalXMLFile(apnFilePath)) {			
 			return null;
 		}

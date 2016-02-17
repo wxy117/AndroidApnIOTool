@@ -14,7 +14,7 @@ import org.dom4j.tree.DefaultAttribute;
 import util.MyUtil;
 
 public class ApnColNameGetter {
-	private ApnXmlLoader apnXmlLoader = new ApnXmlLoader();
+	private ApnXmlReader apnXmlLoader = new ApnXmlReader();
 	
 	public static void main(String[] args) {
 		ApnColNameGetter apnColNameGetter = new ApnColNameGetter();
