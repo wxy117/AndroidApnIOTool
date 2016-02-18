@@ -28,15 +28,9 @@ public class ApnXmlWriter implements IApnWriter {
 			return false;
 		}
 		Document document = DocumentHelper.createDocument();
-		document.addComment(ApnWriter.COMMENT_HEAD1);
-		document.addComment(ApnWriter.COMMENT_HEAD2);
-		document.addComment(ApnWriter.COMMENT_HEAD3);
-		Element rootElement = document.addElement("apns").addAttribute("version", "8");
+		addHeadComments(document);		
+		Element rootElement = createApnRootElement(document);
 		addApnInfoListToElement(apnInfoList, rootElement);
-		for (ApnInfo apnInfo : apnInfoList) {
-			Element apnElement = rootElement.addElement("apn");
-			apnInfo.addApnElementAttribute(apnElement);
-		}
 		try {
 			writeApnToXml(document, apnDirPath);
 		} catch (Exception e) {
@@ -44,7 +38,52 @@ public class ApnXmlWriter implements IApnWriter {
 		}
 		return true;
 	}
+	
+	@Override
+	public boolean writeApnsForGroup(ArrayList<ApnGroup> apnGroupList,
+			String apnDirPath, int fileType) {
+		if (isEmptyArrayList(apnGroupList) || !isDirectory(apnDirPath)) {
+			Log.d(TAG, "apnGroupList is empty or apnDirPath is not dir : " + apnDirPath);
+			return false;
+		}
+		Document document = DocumentHelper.createDocument();
+		addHeadComments(document);		
+		Element rootElement = createApnRootElement(document);
+		addApnGroupListToElement(apnGroupList, rootElement);
+		try {
+			writeApnToXml(document, apnDirPath);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+	
+	private void addApnInfoListToElement(ArrayList<ApnInfo> apnInfoList, Element element) {
+		for (ApnInfo apnInfo : apnInfoList) {
+			Element apnElement = element.addElement("apn");
+			apnInfo.addApnElementAttribute(apnElement);
+		}
+	}
 
+	private void addApnGroupListToElement(ArrayList<ApnGroup> apnGroupList,
+			Element rootElement) {
+		for (ApnGroup apnGroup : apnGroupList) {
+			rootElement.addComment(" " + apnGroup.getName() + "");
+			addApnInfoListToElement(apnGroup.getApnInfoList(), rootElement);
+			rootElement.addComment(" " + apnGroup.getName() + " end ");
+		}		
+	}
+	
+	private void addHeadComments(Document document) {
+		document.addComment(ApnWriter.COMMENT_HEAD1);
+		document.addComment(ApnWriter.COMMENT_HEAD2);
+		document.addComment(ApnWriter.COMMENT_HEAD3);
+	}
+	
+	private Element createApnRootElement(Document document) {
+		return document.addElement("apns").addAttribute("version", "8");
+	}
+	
 	@Override
 	public boolean addApnNodesToExistFlie(ArrayList<ApnInfo> apnInfoList,
 			String apnFilePath) {
@@ -108,21 +147,5 @@ public class ApnXmlWriter implements IApnWriter {
         writer.flush();  				// 立即写入 
         writer.close();  				// 关闭操作 
     }
-	
-	private void addApnInfoListToElement(ArrayList<ApnInfo> apnInfoList, Element element) {
-		for (ApnInfo apnInfo : apnInfoList) {
-			Element apnElement = element.addElement("apn");
-			apnInfo.addApnElementAttribute(apnElement);
-		}
-	}
-
-	@Override
-	public boolean writeApnsForGroup(ArrayList<ApnGroup> apnGroupList,
-			String apnDirPath, int fileType) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-
 
 }

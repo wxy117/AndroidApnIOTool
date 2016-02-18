@@ -9,6 +9,10 @@ public class ApnGroup {
 	private ArrayList<ApnInfo> apnInfoList = new ArrayList<ApnInfo>();
 	private String name;
 	
+	public ArrayList<ApnInfo> getApnInfoList() {
+		return apnInfoList;
+	}
+	
 	public String getName() {
 		return name;
 	}
