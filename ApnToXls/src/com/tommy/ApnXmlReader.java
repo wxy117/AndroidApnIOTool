@@ -2,8 +2,10 @@ package com.tommy;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import org.dom4j.Comment;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -38,6 +40,18 @@ public class ApnXmlReader implements IApnReader {
 			apnInfoList.add(apnInfo);
 		}			
 	    return apnInfoList;
+	}
+	
+	@Override
+	public ArrayList<ApnGroup> readApnsForGroup(String apnFilePath) {
+		if (!MyUtil.isLegalXMLFile(apnFilePath)) {			
+			return null;
+		}
+		ArrayList<ApnGroup> apnGroupList = new ArrayList<ApnGroup>();
+		List<Element> apnElements = getApnElements(apnFilePath);
+		//to be continued...
+		//HashMap<Integer, String> commentMap = new HashMap<>();
+		return null;
 	}
 	
 	/**
@@ -83,6 +97,6 @@ public class ApnXmlReader implements IApnReader {
 			apnInfo.put(key, value);
 		}	
 		return apnInfo;
-	}
+	}	
 
 }

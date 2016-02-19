@@ -15,12 +15,7 @@ import util.MyUtil;
 
 public class ApnReader implements IApnReader {
 	private static final String TAG = "ApnReader";
-	IApnReader apnReader = null;
 	
-	public static void main(String[] args) {
-		ApnReader apnReader = new ApnReader();
-		apnReader.readApns("/Users/mac/Desktop/apns-conf.xml");
-	}
 	
 	/* (non-Javadoc)
 	 * @see tommy.IApnLoader#loadApns(java.lang.String)
@@ -28,17 +23,31 @@ public class ApnReader implements IApnReader {
 	@Override
 	public ArrayList<ApnInfo> readApns(String apnFilePath) {
 		ArrayList<ApnInfo> apnInfoList = new ArrayList<ApnInfo>();
+		IApnReader apnReader = getApnReader(apnFilePath);
+		apnInfoList = apnReader.readApns(apnFilePath);
+		Log.d(TAG, "apnInfoList size" + apnInfoList.size());
+		return apnInfoList;		
+	}
+
+	@Override
+	public ArrayList<ApnGroup> readApnsForGroup(String apnFilePath) {
+		ArrayList<ApnGroup> apnGroupList = new ArrayList<ApnGroup>();
+		IApnReader apnReader = getApnReader(apnFilePath);
+		apnGroupList = apnReader.readApnsForGroup(apnFilePath);
+		Log.d(TAG, "apnGroupList size" + apnGroupList.size());
+		return apnGroupList;	
+	}	
+	
+	private IApnReader getApnReader(String apnFilePath) {
+		IApnReader apnReader = null;
 		if (MyUtil.isLegalXMLFile(apnFilePath)) {
 			apnReader = new ApnXmlReader();
 		} else if (MyUtil.isLegalXLSFile(apnFilePath)) {
 			apnReader = new ApnXlsReader();
 		} else {
 			Log.d(TAG, "neither xml nor xls file!!!");
-			return null;
 		}
-		apnInfoList = apnReader.readApns(apnFilePath);
-		Log.d(TAG, "apnInfoList size" + apnInfoList.size());
-		return apnInfoList;		
-	}	
+		return apnReader;
+	}
 	
 }
