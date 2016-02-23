@@ -23,7 +23,7 @@ public class ApnXmlWriter implements IApnWriter {
 	@Override
 	public boolean writeApns(ArrayList<ApnInfo> apnInfoList,
 			String apnDirPath, int fileType) {
-		if (isEmptyArrayList(apnInfoList) || !isDirectory(apnDirPath)) {
+		if (isEmptyList(apnInfoList) || !isDirectory(apnDirPath)) {
 			Log.d(TAG, "apnInfoList is empty or apnDirPath is not dir : " + apnDirPath);
 			return false;
 		}
@@ -42,10 +42,11 @@ public class ApnXmlWriter implements IApnWriter {
 	@Override
 	public boolean writeApnsForGroup(ArrayList<ApnGroup> apnGroupList,
 			String apnDirPath, int fileType) {
-		if (isEmptyArrayList(apnGroupList) || !isDirectory(apnDirPath)) {
+		if (isEmptyList(apnGroupList) || !isDirectory(apnDirPath)) {
 			Log.d(TAG, "apnGroupList is empty or apnDirPath is not dir : " + apnDirPath);
 			return false;
 		}
+		Log.d(TAG, "apngroupList: " + apnGroupList);
 		Document document = DocumentHelper.createDocument();
 		addHeadComments(document);		
 		Element rootElement = createApnRootElement(document);
@@ -87,7 +88,7 @@ public class ApnXmlWriter implements IApnWriter {
 	@Override
 	public boolean addApnNodesToExistFlie(ArrayList<ApnInfo> apnInfoList,
 			String apnFilePath) {
-		if (isEmptyArrayList(apnInfoList) || !isLegalXMLFile(apnFilePath)) {
+		if (isEmptyList(apnInfoList) || !isLegalXMLFile(apnFilePath)) {
 			Log.d(TAG, "addApnNodesToExistXml():apnInfoList is null : " + (apnInfoList == null));
 			Log.d(TAG, "addApnNodesToExistXml():apnFilePath" + apnFilePath);
 			return false;

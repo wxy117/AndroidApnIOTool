@@ -10,13 +10,20 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.dom4j.tree.AbstractNode;
 import org.dom4j.tree.DefaultAttribute;
+import org.dom4j.tree.DefaultComment;
 
 import util.Log;
 import util.MyUtil;
 
 public class ApnXmlReader implements IApnReader {
 	private static final String TAG = "ApnXmlLoader";
+	
+	public static void main(String[] args) {
+		ApnXmlReader apnXmlReader = new ApnXmlReader();
+		apnXmlReader.readApnsForGroup("/Users/mac/Desktop/apns-conf2.xml");
+	}
 
 	/* (non-Javadoc)
 	 * @see tommy.IApnLoader#loadApns(java.lang.String)
@@ -47,13 +54,39 @@ public class ApnXmlReader implements IApnReader {
 		if (!MyUtil.isLegalXMLFile(apnFilePath)) {			
 			return null;
 		}
-		ArrayList<ApnGroup> apnGroupList = new ArrayList<ApnGroup>();
-		List<Element> apnElements = getApnElements(apnFilePath);
-		//to be continued...
-		//HashMap<Integer, String> commentMap = new HashMap<>();
-		return null;
+		List<AbstractNode> apnContents = getApnContents(apnFilePath);
+		return getApnGroupList(apnContents);
 	}
 	
+	private ArrayList<ApnGroup> getApnGroupList(List<AbstractNode> apnContents) {
+		ArrayList<String> commentList = new ArrayList<String>();
+		HashMap<String, Integer> commentMap = new HashMap<>();		
+		for (int index = 0; index < apnContents.size(); index++) {
+			if (apnContents.get(index) instanceof DefaultComment) {
+				String commentContent = ((DefaultComment)apnContents.get(index)).getText().trim();
+				Log.d(TAG, "comment: " + commentContent);
+				commentList.add(commentContent);
+				commentMap.put(commentContent, index);
+			}
+//			Log.d(TAG, "element: " + apnContents.get(index).getNodeTypeName());
+		}
+		if (commentList.size() == 0) return null;		
+		return ApnGroup.makeApnGroupList(apnContents, commentList, commentMap);
+	}
+	
+	@Override
+	public ArrayList<String> getGroupNameList(String apnFilePath) {
+		if (!MyUtil.isLegalXMLFile(apnFilePath)) {			
+			return null;
+		}
+		ArrayList<String> groupNameList = new ArrayList<String>();
+		ArrayList<ApnGroup> apnGroupList = readApnsForGroup(apnFilePath);
+		for (ApnGroup apnGroup : apnGroupList) {
+			groupNameList.add(apnGroup.getName());
+		}
+		return groupNameList;
+	}
+
 	/**
 	 * @param apnFilePath
 	 * @return
@@ -73,6 +106,34 @@ public class ApnXmlReader implements IApnReader {
 			List<Element> apnElements = root.elements();
 			Log.d(TAG, "size: " + apnElements.size());
 	        return apnElements;
+		} catch (DocumentException e) {
+			Log.d(TAG, "xml file parse failed!!!");
+			return null;
+		}		
+	}
+	
+	public List<AbstractNode> getApnContents(String apnFilePath) {
+		if (!MyUtil.isLegalXMLFile(apnFilePath)) {			
+			return null;
+		}		
+		SAXReader saxReader = new SAXReader();
+		try {
+			Document document = saxReader.read(new File(apnFilePath));
+			Element root = document.getRootElement();
+			if(!root.getName().equals("apns")) {
+				Log.d(TAG, "getApnContent()  root name is not apns! root name: " + root.getName());
+				return null;
+			}
+			List<AbstractNode> apnContents = new ArrayList<AbstractNode>();
+			List list = root.content();
+			for (Object content : list) {
+				if (content instanceof Element || content instanceof Comment) {
+					apnContents.add((AbstractNode)content);
+				}
+//				Log.d(TAG, "getApnContent()  content : " + content.toString());
+			}			
+			Log.d(TAG, "getApnContent()  content size: " + apnContents.size());
+	        return apnContents;
 		} catch (DocumentException e) {
 			Log.d(TAG, "xml file parse failed!!!");
 			return null;

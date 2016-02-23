@@ -2,6 +2,7 @@ package util;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.tommy.ApnWriter;
 
@@ -239,7 +240,7 @@ public class MyUtil {
 	
 	
 	
-	public static boolean isEmptyArrayList(ArrayList<?> list) {
+	public static boolean isEmptyList(List<?> list) {
 		if (list == null || list.isEmpty()) {
 			return true;
 		}

@@ -16,6 +16,24 @@ public class ApnInfo {
 	private ArrayList<String> commentList = new ArrayList<String>();
 	private String groupName = null;
 	
+	public ApnInfo() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public ApnInfo (Element element, String groupName) {
+		if (element == null || !element.getName().equals("apn")) {
+			return;
+		}
+		this.groupName = groupName;
+		for (String key : ApnInfo.APN_KEY_ARRAY) {
+			String value = element.attributeValue(key);
+			if (value == null) {
+				continue;
+			}
+			this.put(key, value);
+		}	
+	}	
+	
 	public String getGroupName() {
 		return groupName;
 	}
@@ -66,6 +84,19 @@ public class ApnInfo {
 		}
 		return element;		
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder stringBuilder = new StringBuilder("ApnInfo : [");
+		for (String string : APN_KEY_ARRAY) {
+			if (infoMap.get(string) != null) {
+				stringBuilder.append(string + ":" + infoMap.get(string) + ", ");
+			}
+		}
+		stringBuilder.append("]");
+		return stringBuilder.toString();	
+	}
+	
 	
 
 	

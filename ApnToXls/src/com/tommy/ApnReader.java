@@ -38,6 +38,15 @@ public class ApnReader implements IApnReader {
 		return apnGroupList;	
 	}	
 	
+	@Override
+	public ArrayList<String> getGroupNameList(String apnFilePath) {
+		ArrayList<String> groupNameList = new ArrayList<String>();
+		IApnReader apnReader = getApnReader(apnFilePath);
+		groupNameList = apnReader.getGroupNameList(apnFilePath);
+		Log.d(TAG, "groupNameList size : " + groupNameList.size());
+		return groupNameList;
+	}
+	
 	private IApnReader getApnReader(String apnFilePath) {
 		IApnReader apnReader = null;
 		if (MyUtil.isLegalXMLFile(apnFilePath)) {
@@ -48,6 +57,6 @@ public class ApnReader implements IApnReader {
 			Log.d(TAG, "neither xml nor xls file!!!");
 		}
 		return apnReader;
-	}
+	}	
 	
 }
