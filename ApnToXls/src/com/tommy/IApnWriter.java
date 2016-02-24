@@ -6,4 +6,5 @@ public interface IApnWriter {
 	public boolean writeApns(ArrayList<ApnInfo> apnInfoList, String apnDirPath, int fileType);
 	public boolean writeApnsForGroup(ArrayList<ApnGroup> apnGroupList, String apnDirPath, int fileType);
 	public boolean addApnNodesToExistFlie(ArrayList<ApnInfo> apnInfoList, String apnFilePath);
+	public boolean addApnGroupToExistFile(ArrayList<ApnGroup> apnGroupList, String apnFilePath);
 }

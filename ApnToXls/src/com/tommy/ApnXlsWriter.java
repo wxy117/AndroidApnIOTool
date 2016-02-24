@@ -25,4 +25,11 @@ public class ApnXlsWriter implements IApnWriter {
 		return false;
 	}
 
+	@Override
+	public boolean addApnGroupToExistFile(ArrayList<ApnGroup> apnGroupList,
+			String apnFilePath) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

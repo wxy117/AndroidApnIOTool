@@ -93,13 +93,7 @@ public class ApnXmlWriter implements IApnWriter {
 			Log.d(TAG, "addApnNodesToExistXml():apnFilePath" + apnFilePath);
 			return false;
 		}
-		SAXReader saxReader = new SAXReader();
-		Document document = null;
-		try {
-			document = saxReader.read(new File(apnFilePath));
-		} catch (DocumentException e) {
-			e.printStackTrace();
-		}
+		Document document = getDocument(apnFilePath);
 		if (document == null) return false;
 		Element rootElement = document.getRootElement();
 		if(!rootElement.getName().equals("apns")) {
@@ -115,8 +109,36 @@ public class ApnXmlWriter implements IApnWriter {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}		
-		return false;
+		return true;
+	}
+	
+	@Override
+	public boolean addApnGroupToExistFile(ArrayList<ApnGroup> apnGroupList,
+			String apnFilePath) {
+		if (isEmptyList(apnGroupList) || !isLegalXMLFile(apnFilePath)) {
+			Log.d(TAG, "addApnNodesToExistXml():apnGroupList is null : " + (apnGroupList == null));
+			Log.d(TAG, "addApnNodesToExistXml():apnFilePath" + apnFilePath);
+			return false;
+		}
+		ApnReader apnReader = new ApnReader();
+		Document document = getDocument(apnFilePath);
+		if (document == null) return false;
+		Element rootElement = document.getRootElement();
+		if(!rootElement.getName().equals("apns")) {
+			Log.d(TAG, "root name is not apns! root name: " + rootElement.getName());
+			return false;
+		}
+		addApnGroupListToElement(apnGroupList, rootElement);
+		try {
+			writeApnToXml(document, apnFilePath);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}		
+		return true;
 	}
 	
 	public void writeApnToXml(Document document, String apnFilePath) throws Exception {  			
@@ -148,5 +170,16 @@ public class ApnXmlWriter implements IApnWriter {
         writer.flush();  				// 立即写入 
         writer.close();  				// 关闭操作 
     }
+	
+	private Document getDocument(String apnFilePath) {
+		SAXReader saxReader = new SAXReader();
+		Document document = null;
+		try {
+			document = saxReader.read(new File(apnFilePath));
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		}
+		return document;
+	}
 
 }

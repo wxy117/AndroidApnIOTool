@@ -78,6 +78,23 @@ public class ApnWriter implements IApnWriter {
 		return false;
 	}
 	
+	@Override
+	public boolean addApnGroupToExistFile(ArrayList<ApnGroup> apnGroupList,
+			String apnFilePath) {
+		Log.d(TAG, "addApnNodesToExistXml():apnGroupList size : " + apnGroupList.size());
+		if (isEmptyList(apnGroupList) || !isLegalApnFile(apnFilePath)) {
+			Log.d(TAG, "addApnNodesToExistXml():apnGroupList is null : " + (apnGroupList == null));
+			Log.d(TAG, "addApnNodesToExistXml():apnFilePath " + apnFilePath);
+			return false;
+		}
+		int fileType = getApnFileType(apnFilePath);
+		IApnWriter apnWriter = getApnWriter(fileType);
+		if (apnWriter != null) {
+			return apnWriter.addApnGroupToExistFile(apnGroupList, apnFilePath);
+		}		
+		return false;
+	}
+	
 	public static int getApnFileType(String apnFilePath) {
 		if (!MyUtil.isFile(apnFilePath)) {		
 			System.out.println("illegal File path : " + apnFilePath);
@@ -122,8 +139,4 @@ public class ApnWriter implements IApnWriter {
 		return apnWriter;
 	}
 
-
-	
-	
-	
 }
